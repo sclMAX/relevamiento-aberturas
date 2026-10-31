@@ -371,22 +371,11 @@ footer { color: var(--muted); font-size: .85rem; padding: 2rem 0 3rem; }
     <ul id="pendingList"></ul>
   </div>
   <div class="card">
-    <p>Como te quede más cómodo. Lo más completo es bajar el archivo y mandármelo por WhatsApp o mail.</p>
+    <p>Bajá el archivo con tus respuestas y mandámelo por WhatsApp o mail.</p>
     <div class="btns">
-      <button type="button" id="btnTxt">Descargar respuestas (texto)</button>
-      <button type="button" id="btnJson" class="secondary">Descargar respaldo (.json)</button>
-      <button type="button" id="btnCopy" class="secondary">Copiar respuestas</button>
-      <button type="button" id="btnWa" class="secondary">Compartir por WhatsApp</button>
-      <button type="button" id="btnMail" class="secondary">Enviar por mail</button>
-      <button type="button" id="btnPrint" class="secondary">Imprimir o guardar PDF</button>
+      <button type="button" id="btnTxt">Descargar respuestas</button>
     </div>
     <p class="status" id="status" role="status" aria-live="polite"></p>
-    <h3>Continuar en otro dispositivo</h3>
-    <p>Bajá el respaldo (.json) y cargalo acá desde el otro navegador. También sirve el link para continuar.</p>
-    <label for="importFile" class="small-label">Cargar respaldo (.json)</label>
-    <input type="file" id="importFile" accept="application/json,.json">
-    <h3>Borrar</h3>
-    <div class="btns"><button type="button" id="btnClear" class="danger">Borrar todas las respuestas</button></div>
   </div>
 </section>
 
@@ -536,8 +525,8 @@ function save() {
   state.updatedAt = new Date().toISOString();
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => {
-    if (persistNow()) setStatus("Guardado en este navegador.");
-    else setStatus("No se pudo guardar en este navegador. Usá “Guardar y seguir después” o bajá el respaldo.");
+    // Silent on success so it never hides a message the user needs; only failures are reported.
+    if (!persistNow()) setStatus("No se pudo guardar en este navegador. Usá “Guardar y seguir después” o bajá el respaldo.");
   }, 300);
 }
 
@@ -862,29 +851,8 @@ function bindActions() {
 
   document.getElementById("btnTxt").addEventListener("click", () => {
     download(fileStamp() + ".txt", readableText(), "text/plain;charset=utf-8");
-    setStatus("Archivo de texto descargado.");
+    setStatus("Listo. Ahora mandame el archivo por WhatsApp o mail.");
   });
-  document.getElementById("btnJson").addEventListener("click", () => {
-    const payload = Object.assign({ format: STORAGE_KEY, exportedAt: new Date().toISOString() }, state);
-    download(fileStamp() + ".json", JSON.stringify(payload, null, 2), "application/json");
-    setStatus("Respaldo descargado.");
-  });
-  document.getElementById("btnCopy").addEventListener("click", async () => {
-    const ok = await copyText(readableText());
-    setStatus(ok ? "Respuestas copiadas. Pegalas en un mensaje o mail." : "No se pudo copiar. Usá la descarga de texto.");
-  });
-  document.getElementById("btnWa").addEventListener("click", () => {
-    const msg = "Listo, te paso las respuestas del relevamiento. Va el archivo adjunto.";
-    window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank", "noopener");
-    setStatus("Acordate de adjuntar el archivo que bajaste o pegar las respuestas copiadas.");
-  });
-  document.getElementById("btnMail").addEventListener("click", () => {
-    const limit = 1500;
-    let body = readableText();
-    if (body.length > limit) body = body.slice(0, limit) + "\n\n[Texto recortado. Adjuntá el archivo que bajaste con las respuestas completas.]";
-    location.href = "mailto:?subject=" + encodeURIComponent("Relevamiento: software de cálculo de aberturas") + "&body=" + encodeURIComponent(body);
-  });
-  document.getElementById("btnPrint").addEventListener("click", () => window.print());
 
   document.getElementById("btnPrev").addEventListener("click", () => showStep(state.step - 1, true));
   document.getElementById("btnNext").addEventListener("click", () => {
@@ -910,34 +878,6 @@ function bindActions() {
     window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank", "noopener");
   });
 
-  document.getElementById("importFile").addEventListener("change", (ev) => {
-    const file = ev.target.files && ev.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      try {
-        const data = JSON.parse(String(reader.result));
-        if (data.format && data.format !== STORAGE_KEY) throw new Error("format");
-        if (!confirm("Esto reemplaza las respuestas guardadas en este navegador. ¿Seguimos?")) return;
-        state = normalize(data);
-        persistNow();
-        render();
-        setStatus("Respaldo cargado.");
-      } catch (e) {
-        setStatus("El archivo no es un respaldo válido de este cuestionario.");
-      }
-      ev.target.value = "";
-    };
-    reader.readAsText(file);
-  });
-
-  document.getElementById("btnClear").addEventListener("click", () => {
-    if (!confirm("¿Borrar todas las respuestas guardadas en este navegador? Esta acción no se puede deshacer.")) return;
-    state = emptyState();
-    try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
-    render();
-    setStatus("Respuestas borradas.");
-  });
 
   // Open collapsed research sections for printing, then restore.
   let closedForPrint = [];
