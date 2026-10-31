@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:,">
 <title>Relevamiento: software de cálculo de aberturas</title>
 <style>
 :root {
@@ -83,12 +84,23 @@ textarea:focus, input[type=text]:focus { outline: 2px solid var(--accent); outli
 @media (min-width: 40rem) { .feature-row { grid-template-columns: 1fr auto; align-items: center; } }
 .feature-row .opts { margin: 0; }
 .btns { display: flex; flex-wrap: wrap; gap: .5rem; margin: .5rem 0; }
-button { font: inherit; font-weight: 600; padding: .55rem .9rem; border-radius: .4rem; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
+button { font: inherit; font-weight: 600; min-height: 44px; padding: .55rem .9rem; border-radius: .4rem; border: 1px solid var(--accent); background: var(--accent); color: #fff; cursor: pointer; }
 button.secondary { background: var(--card); color: var(--accent); }
 button.danger { background: var(--card); color: var(--red); border-color: var(--red); }
 button:focus-visible { outline: 3px solid var(--text); outline-offset: 2px; }
 .status { font-size: .88rem; color: var(--muted); min-height: 1.3rem; }
 .pv { display: none; white-space: pre-wrap; }
+select { width: 100%; min-height: 44px; font: inherit; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: .4rem; padding: .4rem .5rem; }
+.step-label { margin: 0 0 .5rem; font-weight: 700; }
+.wizard-foot { display: flex; justify-content: space-between; gap: .75rem; margin: 0 0 1rem; }
+.wizard-foot button { flex: 1; }
+.opts label { min-height: 44px; }
+.warning { background: var(--yellow-soft); color: var(--text); border-left: 4px solid var(--yellow); padding: .75rem 1rem; border-radius: .3rem; margin: 1rem 0 0; }
+#resumeLink { font-size: .85rem; }
+#pendingList { list-style: none; padding: 0; margin: .5rem 0 0; }
+#pendingList li { margin: 0 0 .35rem; }
+.link-btn { width: 100%; text-align: left; background: var(--card); color: var(--accent); border: 1px solid var(--line); font-weight: 500; }
+.done-msg { color: var(--green); font-weight: 600; }
 footer { color: var(--muted); font-size: .85rem; padding: 2rem 0 3rem; }
 @media print {
   nav.main, .btns, .no-print, input[type=file] { display: none !important; }
@@ -99,6 +111,8 @@ footer { color: var(--muted); font-size: .85rem; padding: 2rem 0 3rem; }
   textarea { display: none; }
   .pv { display: block; border-left: 2px solid #999; padding-left: .5rem; min-height: 1rem; }
   .q { break-inside: avoid; }
+  .step[hidden], #respondentCard[hidden] { display: block !important; }
+  #wizardHead, .wizard-foot, #resumeCard, #summaryCard, .warning { display: none !important; }
   a { color: #000; }
 }
 </style>
@@ -123,13 +137,15 @@ footer { color: var(--muted); font-size: .85rem; padding: 2rem 0 3rem; }
 </nav>
 
 <main class="wrap">
+<p class="warning" id="inAppWarning" hidden><strong>Atención:</strong> la página está abierta dentro de otra aplicación (por ejemplo WhatsApp) y las respuestas podrían perderse al cerrarla. Se recomienda abrirla en el navegador (menú ⋮ o … › “Abrir en el navegador”) o usar “Guardar y seguir después”.</p>
+<p class="warning" id="storageWarning" hidden><strong>Atención:</strong> este navegador no permite guardar las respuestas. Use “Guardar y seguir después” o descargue el respaldo antes de cerrar la página.</p>
 
 <section class="part" aria-labelledby="t-intro">
   <h2 id="t-intro">Cómo usar esta página</h2>
   <div class="card">
     <ol>
       <li>Leer el resumen de la investigación. Las secciones se despliegan con un clic.</li>
-      <li>Completar el cuestionario. No es necesario responder todo: lo marcado como <span class="badge m-talk">Para conversar</span> se trata en la reunión, y alcanza con dejar notas previas si se desea.</li>
+      <li>Completar el cuestionario paso a paso (13 bloques). Puede dejarse por la mitad y seguir después. No es necesario responder todo: lo marcado como <span class="badge m-talk">Para conversar</span> se trata en la reunión, y alcanza con dejar notas previas si se desea.</li>
       <li>Enviar las respuestas desde la sección <a href="#enviar">Enviar respuestas</a>.</li>
     </ol>
     <p class="note"><strong>Privacidad:</strong> las respuestas se guardan solo en este navegador hasta que usted decida enviarlas. Esta página no envía datos a ningún servidor ni usa herramientas de seguimiento.</p>
@@ -328,17 +344,44 @@ footer { color: var(--muted); font-size: .85rem; padding: 2rem 0 3rem; }
     <span class="badge p-r">Bloqueante</span><span class="badge p-y">Importante</span><span class="badge p-g">Complementaria</span>
     <span class="badge m-fill">Para completar</span><span class="badge m-talk">Para conversar</span>
   </div>
-  <div class="card">
+  <div class="card" id="wizardHead">
+    <p id="stepLabel" class="step-label" aria-live="polite"></p>
+    <label for="stepSelect" class="small-label">Ir a un bloque</label>
+    <select id="stepSelect"></select>
+  </div>
+  <div class="card" id="respondentCard">
     <div class="respondent">
       <div><label for="r-name">Nombre</label><input type="text" id="r-name" autocomplete="name"></div>
       <div><label for="r-role">Cargo o área</label><input type="text" id="r-role" autocomplete="organization-title"></div>
     </div>
   </div>
   <div id="blocks"></div>
+  <div class="wizard-foot">
+    <button type="button" id="btnPrev" class="secondary">Anterior</button>
+    <button type="button" id="btnNext">Siguiente</button>
+  </div>
+  <div class="card" id="resumeCard">
+    <h3 style="margin-top:0">¿Seguir más tarde?</h3>
+    <p class="q-why">Las respuestas se guardan solas en este navegador. Para seguir desde otro dispositivo, o si la página se abrió desde WhatsApp, conviene generar un link para continuar. En iPhone, lo guardado se borra si no se vuelve a abrir la página en 7 días.</p>
+    <button type="button" id="btnResume" class="secondary">Guardar y seguir después</button>
+    <div id="resumeBox" hidden>
+      <label for="resumeLink" class="small-label">Link para continuar (contiene sus respuestas; compártalo solo con quien corresponda)</label>
+      <input type="text" id="resumeLink" readonly>
+      <div class="btns">
+        <button type="button" id="btnResumeCopy">Copiar link</button>
+        <button type="button" id="btnResumeWa" class="secondary">Enviármelo por WhatsApp</button>
+      </div>
+    </div>
+  </div>
 </section>
 
 <section class="part" id="enviar" aria-labelledby="t-env">
   <h2 id="t-env">Enviar respuestas</h2>
+  <div class="card" id="summaryCard">
+    <h3 style="margin-top:0">Preguntas bloqueantes sin responder</h3>
+    <p class="q-why" id="pendingIntro"></p>
+    <ul id="pendingList"></ul>
+  </div>
   <div class="card">
     <p>Elija la forma que le resulte más cómoda. Lo más completo es descargar el archivo y enviarlo por WhatsApp o mail.</p>
     <div class="btns">
@@ -514,18 +557,35 @@ const BLOCKS = [
 ];
 const MATERIAL_OPTIONS = ["Ya lo tenemos", "Lo enviaremos", "No disponible"];
 
-let state = { respondent: { name: "", role: "" }, answers: {}, updatedAt: null };
+let state = emptyState();
+let storageOk = true;
+
+function emptyState() {
+  return { respondent: { name: "", role: "" }, answers: {}, step: 1, updatedAt: null };
+}
 
 function load() {
   try {
+    const probe = STORAGE_KEY + ":probe";
+    localStorage.setItem(probe, "1");
+    localStorage.removeItem(probe);
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) state = normalize(JSON.parse(raw));
-  } catch (e) { /* storage unavailable or corrupt: start empty */ }
+  } catch (e) {
+    storageOk = false;
+  }
+}
+
+function persistNow() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); return true; }
+  catch (e) { return false; }
 }
 
 function normalize(data) {
-  const out = { respondent: { name: "", role: "" }, answers: {}, updatedAt: null };
+  const out = emptyState();
   if (!data || typeof data !== "object") return out;
+  const step = parseInt(data.step, 10);
+  if (step >= 1 && step <= BLOCKS.length) out.step = step;
   if (data.respondent) {
     out.respondent.name = String(data.respondent.name || "");
     out.respondent.role = String(data.respondent.role || "");
@@ -548,8 +608,8 @@ function save() {
   state.updatedAt = new Date().toISOString();
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); setStatus("Guardado en este navegador."); }
-    catch (e) { setStatus("No se pudo guardar en este navegador. Descargue el respaldo para no perder las respuestas."); }
+    if (persistNow()) setStatus("Guardado en este navegador.");
+    else setStatus("No se pudo guardar en este navegador. Use “Guardar y seguir después” o descargue el respaldo.");
   }, 300);
 }
 
@@ -655,8 +715,11 @@ function renderQuestion(q, num) {
 function render() {
   const root = document.getElementById("blocks");
   root.textContent = "";
+  const select = document.getElementById("stepSelect");
+  select.textContent = "";
   BLOCKS.forEach((b, bi) => {
-    const card = el("div", { class: "card", id: b.id });
+    select.appendChild(el("option", { value: String(bi + 1), text: (bi + 1) + ". " + b.title }));
+    const card = el("div", { class: "card step", id: b.id, "data-step": String(bi + 1) });
     const head = el("div", { class: "block-head" }, [
       el("h3", { text: (bi + 1) + ". " + b.title }),
       el("span", { class: "block-progress", id: "p-" + b.id })
@@ -668,7 +731,61 @@ function render() {
   });
   document.getElementById("r-name").value = state.respondent.name;
   document.getElementById("r-role").value = state.respondent.role;
+  showStep(state.step, false);
   updateProgress();
+}
+
+function showStep(n, userAction) {
+  const step = Math.min(Math.max(1, n), BLOCKS.length);
+  state.step = step;
+  document.querySelectorAll(".step").forEach(card => { card.hidden = card.getAttribute("data-step") !== String(step); });
+  document.getElementById("respondentCard").hidden = step !== 1;
+  document.getElementById("stepLabel").textContent = "Paso " + step + " de " + BLOCKS.length + " · " + BLOCKS[step - 1].title;
+  document.getElementById("stepSelect").value = String(step);
+  document.getElementById("btnPrev").disabled = step === 1;
+  document.getElementById("btnNext").textContent = step === BLOCKS.length ? "Revisar y enviar" : "Siguiente";
+  if (userAction) {
+    save();
+    document.getElementById("wizardHead").scrollIntoView({ block: "start" });
+  }
+}
+
+function locate(id) {
+  for (let bi = 0; bi < BLOCKS.length; bi++) {
+    const qi = BLOCKS[bi].questions.findIndex(q => q.id === id);
+    if (qi >= 0) return { step: bi + 1, num: (bi + 1) + "." + (qi + 1), q: BLOCKS[bi].questions[qi] };
+  }
+  return null;
+}
+
+function goToQuestion(id) {
+  const loc = locate(id);
+  if (!loc) return;
+  showStep(loc.step, true);
+  const node = document.getElementById("q-" + id);
+  const field = node && node.querySelector("textarea, input");
+  if (node) node.scrollIntoView({ block: "center" });
+  if (field) field.focus({ preventScroll: true });
+}
+
+function renderPending() {
+  const list = document.getElementById("pendingList");
+  list.textContent = "";
+  const pending = [];
+  for (const b of BLOCKS) for (const q of b.questions) if (q.p === "r" && !isAnswered(q.id)) pending.push(q.id);
+  const intro = document.getElementById("pendingIntro");
+  if (!pending.length) {
+    intro.textContent = "";
+    intro.appendChild(el("span", { class: "done-msg", text: "No quedan preguntas bloqueantes sin responder." }));
+    return;
+  }
+  intro.textContent = "Quedan " + pending.length + ". Se pueden responder ahora o conversar en la reunión; toque una para ir a ella.";
+  for (const id of pending) {
+    const loc = locate(id);
+    const btn = el("button", { type: "button", class: "link-btn", text: loc.num + " " + loc.q.q });
+    btn.addEventListener("click", () => goToQuestion(id));
+    list.appendChild(el("li", {}, [btn]));
+  }
 }
 
 function onChange(id) {
@@ -692,6 +809,67 @@ function updateProgress() {
     }
   }
   document.getElementById("globalProgress").textContent = "Respondidas: " + done + " de " + total;
+  const select = document.getElementById("stepSelect");
+  BLOCKS.forEach((b, bi) => {
+    const d = b.questions.filter(q => isAnswered(q.id)).length;
+    if (select.options[bi]) select.options[bi].text = (bi + 1) + ". " + b.title + " (" + d + "/" + b.questions.length + ")";
+  });
+  renderPending();
+}
+
+function toBase64Url(bytes) {
+  let bin = "";
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+function fromBase64Url(text) {
+  const b64 = text.replace(/-/g, "+").replace(/_/g, "/");
+  const bin = atob(b64 + "===".slice((b64.length + 3) % 4));
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return bytes;
+}
+
+const canCompress = typeof CompressionStream === "function" && typeof DecompressionStream === "function";
+
+// Continue link: the whole state travels in the URL fragment, never sent to a server.
+async function encodeState() {
+  const bytes = new TextEncoder().encode(JSON.stringify(state));
+  if (!canCompress) return "j" + toBase64Url(bytes);
+  const stream = new Blob([bytes]).stream().pipeThrough(new CompressionStream("deflate-raw"));
+  return "z" + toBase64Url(new Uint8Array(await new Response(stream).arrayBuffer()));
+}
+
+async function decodeState(token) {
+  const bytes = fromBase64Url(token.slice(1));
+  if (token[0] === "j") return JSON.parse(new TextDecoder().decode(bytes));
+  if (token[0] !== "z" || !canCompress) throw new Error("unsupported");
+  const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
+  return JSON.parse(await new Response(stream).text());
+}
+
+function hasAnyAnswer() {
+  return Object.keys(state.answers).some(isAnswered) || state.respondent.name.trim() !== "";
+}
+
+async function restoreFromHash() {
+  const match = location.hash.match(/^#r=([A-Za-z0-9_-]+)$/);
+  if (!match) return null;
+  history.replaceState(null, "", location.pathname + location.search);
+  try {
+    const incoming = normalize(await decodeState(match[1]));
+    if (hasAnyAnswer() && !confirm("Este link trae respuestas guardadas. ¿Reemplazar las que hay en este navegador?")) return "kept";
+    state = incoming;
+    persistNow();
+    return "restored";
+  } catch (e) {
+    return "invalid";
+  }
+}
+
+function pageUrl() {
+  return location.href.split("#")[0];
 }
 
 function formatDate(iso) {
@@ -788,6 +966,30 @@ function bindActions() {
   });
   document.getElementById("btnPrint").addEventListener("click", () => window.print());
 
+  document.getElementById("btnPrev").addEventListener("click", () => showStep(state.step - 1, true));
+  document.getElementById("btnNext").addEventListener("click", () => {
+    if (state.step < BLOCKS.length) { showStep(state.step + 1, true); return; }
+    renderPending();
+    document.getElementById("enviar").scrollIntoView({ block: "start" });
+  });
+  document.getElementById("stepSelect").addEventListener("change", (ev) => showStep(parseInt(ev.target.value, 10), true));
+
+  document.getElementById("btnResume").addEventListener("click", async () => {
+    const link = pageUrl() + "#r=" + await encodeState();
+    persistNow();
+    document.getElementById("resumeLink").value = link;
+    document.getElementById("resumeBox").hidden = false;
+    setStatus("Link para continuar generado.");
+  });
+  document.getElementById("btnResumeCopy").addEventListener("click", async () => {
+    const ok = await copyText(document.getElementById("resumeLink").value);
+    setStatus(ok ? "Link copiado." : "No se pudo copiar; seleccione el link y cópielo a mano.");
+  });
+  document.getElementById("btnResumeWa").addEventListener("click", () => {
+    const msg = "Link para continuar el relevamiento: " + document.getElementById("resumeLink").value;
+    window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank", "noopener");
+  });
+
   document.getElementById("importFile").addEventListener("change", (ev) => {
     const file = ev.target.files && ev.target.files[0];
     if (!file) return;
@@ -798,7 +1000,7 @@ function bindActions() {
         if (data.format && data.format !== STORAGE_KEY) throw new Error("format");
         if (!confirm("Esto reemplaza las respuestas guardadas en este navegador. ¿Continuar?")) return;
         state = normalize(data);
-        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* keep in memory */ }
+        persistNow();
         render();
         setStatus("Respaldo cargado.");
       } catch (e) {
@@ -811,7 +1013,7 @@ function bindActions() {
 
   document.getElementById("btnClear").addEventListener("click", () => {
     if (!confirm("¿Borrar todas las respuestas guardadas en este navegador? Esta acción no se puede deshacer.")) return;
-    state = { respondent: { name: "", role: "" }, answers: {}, updatedAt: null };
+    state = emptyState();
     try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
     render();
     setStatus("Respuestas borradas.");
@@ -829,10 +1031,21 @@ function bindActions() {
   });
 }
 
-load();
-render();
-bindActions();
-if (state.updatedAt) setStatus("Se recuperaron respuestas guardadas el " + formatDate(state.updatedAt) + ".");
+const IN_APP_BROWSER = /WhatsApp|FBAN|FBAV|Instagram|Line\//i;
+
+async function init() {
+  load();
+  const fromLink = await restoreFromHash();
+  render();
+  bindActions();
+  document.getElementById("inAppWarning").hidden = !IN_APP_BROWSER.test(navigator.userAgent);
+  document.getElementById("storageWarning").hidden = storageOk;
+  if (fromLink === "restored") setStatus("Se recuperaron las respuestas del link para continuar.");
+  else if (fromLink === "invalid") setStatus("El link para continuar no es válido o está incompleto.");
+  else if (state.updatedAt) setStatus("Se recuperaron respuestas guardadas el " + formatDate(state.updatedAt) + ".");
+}
+
+init();
 </script>
 </body>
 </html>
