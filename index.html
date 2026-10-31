@@ -68,7 +68,7 @@ li { margin: .2rem 0; }
 .q-title { font-weight: 600; margin: 0 0 .3rem; display: block; }
 .q-num { color: var(--muted); margin-right: .3rem; }
 .q-meta { display: flex; flex-wrap: wrap; gap: .35rem; margin: 0 0 .35rem; }
-.q-why { font-size: .85rem; color: var(--muted); margin: 0 0 .5rem; }
+.hint { font-size: .85rem; color: var(--muted); margin: 0 0 .5rem; }
 .q.done .q-num::before { content: "✓ "; color: var(--green); }
 textarea, input[type=text] { width: 100%; font: inherit; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: .4rem; padding: .5rem .6rem; }
 textarea { min-height: 4.2rem; resize: vertical; }
@@ -76,9 +76,6 @@ textarea:focus, input[type=text]:focus { outline: 2px solid var(--accent); outli
 .opts { display: flex; flex-wrap: wrap; gap: .35rem .9rem; margin: .2rem 0 .5rem; }
 .opts label { display: inline-flex; gap: .35rem; align-items: center; cursor: pointer; }
 .small-label { font-size: .82rem; color: var(--muted); display: block; margin: .3rem 0 .2rem; }
-.respondent { display: grid; gap: .7rem; grid-template-columns: 1fr; }
-@media (min-width: 40rem) { .respondent { grid-template-columns: 1fr 1fr; } }
-.respondent label { font-weight: 600; display: block; margin-bottom: .25rem; }
 .feature-row { display: grid; grid-template-columns: 1fr; gap: .2rem; padding: .6rem 0; border-top: 1px solid var(--line); }
 .feature-row:first-of-type { border-top: 0; }
 @media (min-width: 40rem) { .feature-row { grid-template-columns: 1fr auto; align-items: center; } }
@@ -111,7 +108,7 @@ footer { color: var(--muted); font-size: .85rem; padding: 2rem 0 3rem; }
   textarea { display: none; }
   .pv { display: block; border-left: 2px solid #999; padding-left: .5rem; min-height: 1rem; }
   .q { break-inside: avoid; }
-  .step[hidden], #respondentCard[hidden] { display: block !important; }
+  .step[hidden] { display: block !important; }
   #wizardHead, .wizard-foot, #resumeCard, #summaryCard, .warning { display: none !important; }
   a { color: #000; }
 }
@@ -122,8 +119,8 @@ footer { color: var(--muted); font-size: .85rem; padding: 2rem 0 3rem; }
 <header class="top">
   <div class="wrap">
     <h1>Software de cálculo de aberturas de aluminio</h1>
-    <p>Investigación preliminar y cuestionario previo a la reunión de trabajo.</p>
-    <p>Lectura: 10 a 15 minutos. Cuestionario: 30 a 45 minutos (puede completarse en varias veces).</p>
+    <p>Lo que encontré investigando y unas preguntas para charlar cómo tendría que funcionar la app.</p>
+    <p>Leer: 10 minutos. Responder: 15 a 20 minutos, casi todo es tocar opciones. Podés hacerlo en varias veces.</p>
   </div>
 </header>
 
@@ -137,18 +134,18 @@ footer { color: var(--muted); font-size: .85rem; padding: 2rem 0 3rem; }
 </nav>
 
 <main class="wrap">
-<p class="warning" id="inAppWarning" hidden><strong>Atención:</strong> la página está abierta dentro de otra aplicación (por ejemplo WhatsApp) y las respuestas podrían perderse al cerrarla. Se recomienda abrirla en el navegador (menú ⋮ o … › “Abrir en el navegador”) o usar “Guardar y seguir después”.</p>
-<p class="warning" id="storageWarning" hidden><strong>Atención:</strong> este navegador no permite guardar las respuestas. Use “Guardar y seguir después” o descargue el respaldo antes de cerrar la página.</p>
+<p class="warning" id="inAppWarning" hidden><strong>Ojo:</strong> abriste la página dentro de otra app (por ejemplo WhatsApp) y las respuestas se pueden perder al cerrarla. Mejor abrila en el navegador (menú ⋮ o … › “Abrir en el navegador”) o usá “Guardar y seguir después”.</p>
+<p class="warning" id="storageWarning" hidden><strong>Ojo:</strong> este navegador no deja guardar las respuestas. Usá “Guardar y seguir después” o bajá el respaldo antes de cerrar la página.</p>
 
 <section class="part" aria-labelledby="t-intro">
-  <h2 id="t-intro">Cómo usar esta página</h2>
+  <h2 id="t-intro">Cómo funciona esta página</h2>
   <div class="card">
     <ol>
-      <li>Leer el resumen de la investigación. Las secciones se despliegan con un clic.</li>
-      <li>Completar el cuestionario paso a paso (13 bloques). Puede dejarse por la mitad y seguir después. No es necesario responder todo: lo marcado como <span class="badge m-talk">Para conversar</span> se trata en la reunión, y alcanza con dejar notas previas si se desea.</li>
-      <li>Enviar las respuestas desde la sección <a href="#enviar">Enviar respuestas</a>.</li>
+      <li>Si tenés ganas, leé el resumen de la investigación. Las secciones se abren con un toque.</li>
+      <li>Respondé el cuestionario paso a paso (10 pasos). Podés dejarlo por la mitad y seguir después, y no hace falta responder todo: lo marcado como <span class="badge m-talk">Lo charlamos</span> lo vemos en persona; si querés, dejá alguna nota.</li>
+      <li>Al final, mandame las respuestas desde <a href="#enviar">Enviar respuestas</a>.</li>
     </ol>
-    <p class="note"><strong>Privacidad:</strong> las respuestas se guardan solo en este navegador hasta que usted decida enviarlas. Esta página no envía datos a ningún servidor ni usa herramientas de seguimiento.</p>
+    <p class="note"><strong>Privacidad:</strong> las respuestas quedan solo en este navegador hasta que decidas mandarlas. La página no envía datos a ningún servidor ni usa herramientas de seguimiento.</p>
   </div>
 </section>
 
@@ -340,20 +337,11 @@ footer { color: var(--muted); font-size: .85rem; padding: 2rem 0 3rem; }
 
 <section class="part" id="cuestionario" aria-labelledby="t-cue">
   <h2 id="t-cue">Cuestionario</h2>
-  <div class="legend" aria-label="Referencias">
-    <span class="badge p-r">Bloqueante</span><span class="badge p-y">Importante</span><span class="badge p-g">Complementaria</span>
-    <span class="badge m-fill">Para completar</span><span class="badge m-talk">Para conversar</span>
-  </div>
+  <p class="hint">Casi todo es tocar opciones; si algo no encaja, usá el comentario. Lo marcado como <span class="badge m-talk">Lo charlamos</span> lo vemos en persona.</p>
   <div class="card" id="wizardHead">
     <p id="stepLabel" class="step-label" aria-live="polite"></p>
-    <label for="stepSelect" class="small-label">Ir a un bloque</label>
+    <label for="stepSelect" class="small-label">Ir a un paso</label>
     <select id="stepSelect"></select>
-  </div>
-  <div class="card" id="respondentCard">
-    <div class="respondent">
-      <div><label for="r-name">Nombre</label><input type="text" id="r-name" autocomplete="name"></div>
-      <div><label for="r-role">Cargo o área</label><input type="text" id="r-role" autocomplete="organization-title"></div>
-    </div>
   </div>
   <div id="blocks"></div>
   <div class="wizard-foot">
@@ -362,10 +350,10 @@ footer { color: var(--muted); font-size: .85rem; padding: 2rem 0 3rem; }
   </div>
   <div class="card" id="resumeCard">
     <h3 style="margin-top:0">¿Seguir más tarde?</h3>
-    <p class="q-why">Las respuestas se guardan solas en este navegador. Para seguir desde otro dispositivo, o si la página se abrió desde WhatsApp, conviene generar un link para continuar. En iPhone, lo guardado se borra si no se vuelve a abrir la página en 7 días.</p>
+    <p class="hint">Las respuestas se guardan solas en este navegador. Si querés seguir desde otro celu o compu, o abriste la página desde WhatsApp, generá un link para continuar. En iPhone, lo guardado se borra si no volvés a abrir la página en 7 días.</p>
     <button type="button" id="btnResume" class="secondary">Guardar y seguir después</button>
     <div id="resumeBox" hidden>
-      <label for="resumeLink" class="small-label">Link para continuar (contiene sus respuestas; compártalo solo con quien corresponda)</label>
+      <label for="resumeLink" class="small-label">Link para continuar (lleva tus respuestas adentro; no lo compartas con cualquiera)</label>
       <input type="text" id="resumeLink" readonly>
       <div class="btns">
         <button type="button" id="btnResumeCopy">Copiar link</button>
@@ -378,12 +366,12 @@ footer { color: var(--muted); font-size: .85rem; padding: 2rem 0 3rem; }
 <section class="part" id="enviar" aria-labelledby="t-env">
   <h2 id="t-env">Enviar respuestas</h2>
   <div class="card" id="summaryCard">
-    <h3 style="margin-top:0">Preguntas bloqueantes sin responder</h3>
-    <p class="q-why" id="pendingIntro"></p>
+    <h3 style="margin-top:0">Lo que quedó sin responder</h3>
+    <p class="hint" id="pendingIntro"></p>
     <ul id="pendingList"></ul>
   </div>
   <div class="card">
-    <p>Elija la forma que le resulte más cómoda. Lo más completo es descargar el archivo y enviarlo por WhatsApp o mail.</p>
+    <p>Como te quede más cómodo. Lo más completo es bajar el archivo y mandármelo por WhatsApp o mail.</p>
     <div class="btns">
       <button type="button" id="btnTxt">Descargar respuestas (texto)</button>
       <button type="button" id="btnJson" class="secondary">Descargar respaldo (.json)</button>
@@ -394,7 +382,7 @@ footer { color: var(--muted); font-size: .85rem; padding: 2rem 0 3rem; }
     </div>
     <p class="status" id="status" role="status" aria-live="polite"></p>
     <h3>Continuar en otro dispositivo</h3>
-    <p>Descargue el respaldo (.json) y cárguelo aquí en el otro navegador.</p>
+    <p>Bajá el respaldo (.json) y cargalo acá desde el otro navegador. También sirve el link para continuar.</p>
     <label for="importFile" class="small-label">Cargar respaldo (.json)</label>
     <input type="file" id="importFile" accept="application/json,.json">
     <h3>Borrar</h3>
@@ -410,158 +398,103 @@ footer { color: var(--muted); font-size: .85rem; padding: 2rem 0 3rem; }
 <script>
 "use strict";
 
-const STORAGE_KEY = "relevamiento-aberturas:v1";
-const FEATURE_OPTIONS = ["Imprescindible", "Deseable", "No hace falta"];
-const PRIORITY = {
-  r: { label: "Bloqueante", cls: "p-r" },
-  y: { label: "Importante", cls: "p-y" },
-  g: { label: "Complementaria", cls: "p-g" }
-};
+const STORAGE_KEY = "relevamiento-aberturas:v2";
+const FEATURE_OPTIONS = ["Imprescindible", "Estaría bueno", "No hace falta"];
 
-// Question bank. Keys are stable ids; display numbers are computed by position.
-// mode: "fill" (answer here) or "talk" (discuss in the meeting; optional notes).
-// type: "text" | "check" | "radio" | "feature" | "material"
+// Question bank. Ids are stable keys; display numbers are computed by position.
+// mode "talk" = better discussed in person ("Lo charlamos"); notes are optional.
+// type: "text" | "check" | "radio" | "feature". Option questions also get an optional comment.
 const BLOCKS = [
-  { id: "b1", title: "La empresa y su negocio", questions: [
-    { id: "1.1", p: "r", mode: "fill", type: "text", q: "¿Qué marcas o extrusoras distribuyen? ¿Son distribuidores oficiales de alguna? ¿Con exclusividad en la zona?", why: "Define qué catálogos cargar y si hay apoyo de la extrusora." },
-    { id: "1.2", p: "r", mode: "fill", type: "text", q: "¿Qué líneas de cada marca venden más? Un ranking aproximado alcanza.", why: "Indica qué líneas cargar primero." },
-    { id: "1.3", p: "r", mode: "fill", type: "text", q: "¿Qué accesorios y herrajes venden? ¿De qué marcas?", why: "Los herrajes salen del cálculo y forman parte del pedido." },
-    { id: "1.4", p: "y", mode: "fill", type: "check", q: "¿Qué otros productos venden?", options: ["Vidrio", "DVH", "PVC", "Tornillería", "Selladores", "Cortinas de enrollar", "Otro"], why: "Amplía lo que puede calcularse y pedirse." },
-    { id: "1.5", p: "y", mode: "fill", type: "text", q: "¿Cuántas sucursales tienen y dónde? ¿Venden a todo el país?", why: "Stock por sucursal, logística y zonas de viento." },
-    { id: "1.6", p: "y", mode: "fill", type: "check", q: "¿Ofrecen alguno de estos servicios?", options: ["Corte a medida", "Anodizado", "Pintura", "Armado de aberturas"], why: "Podría sumarse como pedido de piezas cortadas o terminadas." },
-    { id: "1.7", p: "g", mode: "fill", type: "text", q: "(Opcional) ¿Qué peso aproximado tiene el negocio de aberturas sobre el total de la empresa?", why: "Ayuda a dimensionar el alcance razonable." },
-    { id: "1.8", p: "r", mode: "fill", type: "text", q: "¿Quiénes son los principales competidores en su zona?", why: "Permite entender con qué se compara la herramienta." },
-    { id: "1.9", p: "r", mode: "fill", type: "check", q: "¿En qué se diferencian de la competencia?", options: ["Precio", "Stock", "Entrega", "Crédito", "Atención", "Asesoramiento técnico", "Otro"], why: "Define qué debería destacar la herramienta." }
+  { id: "b1", title: "Tu negocio", questions: [
+    { id: "1.1", type: "text", q: "¿Qué marcas y líneas vendés? ¿Cuáles salen más?" },
+    { id: "1.2", type: "check", q: "Además de perfiles, ¿qué más vendés? Si querés, contá en el comentario de qué marcas son los herrajes.", options: ["Accesorios y herrajes", "Vidrio", "DVH", "PVC", "Tornillería y selladores", "Cortinas de enrollar", "Otro"] },
+    { id: "1.3", type: "check", q: "¿Hacés alguno de estos servicios?", options: ["Corte a medida", "Anodizado", "Pintura", "Armado de aberturas", "Ninguno"] },
+    { id: "1.4", type: "radio", q: "¿Cuántos locales tenés? Si hacés envíos, contá a qué zonas en el comentario.", options: ["Uno", "2 o 3", "Más de 3"] },
+    { id: "1.5", type: "text", q: "¿Quiénes son tus competidores y en qué les ganás o perdés (precio, stock, entrega, crédito, atención)?" }
   ]},
-  { id: "b2", title: "Objetivo del proyecto", questions: [
-    { id: "2.1", p: "r", mode: "talk", type: "text", q: "¿Qué problema quieren resolver con esta herramienta? Idealmente con un ejemplo real.", why: "Todo el producto parte de esta respuesta." },
-    { id: "2.2", p: "r", mode: "talk", type: "text", q: "¿Qué sería un éxito a 6 y a 12 meses? (por ejemplo: cantidad de carpinteros usándola, más pedidos, menos reclamos)", why: "Define cómo se mide el resultado." },
-    { id: "2.3", p: "r", mode: "talk", type: "text", q: "¿El objetivo principal es fidelizar clientes y facilitar pedidos, o también ofrecerla como un producto independiente?", why: "Cambia el alcance y el tipo de herramienta." },
-    { id: "2.4", p: "y", mode: "talk", type: "text", q: "¿Por qué ahora? ¿Hubo algo que lo motivó?", why: "Urgencia y foco." },
-    { id: "2.5", p: "y", mode: "fill", type: "text", q: "¿Probaron antes algo parecido (software, planillas compartidas, calculadoras)? ¿Qué resultado tuvo?", why: "Evita repetir errores." },
-    { id: "2.6", p: "y", mode: "talk", type: "text", q: "¿Qué no debería hacer la herramienta?", why: "Pone límites al alcance." },
-    { id: "2.7", p: "y", mode: "fill", type: "text", q: "¿Hay alguna fecha importante (feria, temporada, lanzamiento de línea)?", why: "Permite planificar por etapas." },
-    { id: "2.8", p: "r", mode: "fill", type: "text", q: "¿Quién decide dentro de la empresa y quién sería el referente para el día a día?", why: "Organización del proyecto." }
+  { id: "b2", title: "La idea", questions: [
+    { id: "2.1", type: "text", q: "¿Qué problema querés resolver con la app? Si podés, contalo con un ejemplo real." },
+    { id: "2.2", type: "check", q: "¿Qué tiene que lograr sí o sí?", options: ["Que los carpinteros me pidan más material", "Que coticen más rápido", "Menos errores y reclamos", "Atender más rápido en el mostrador", "Saber qué se cotiza y qué se vende", "Otro"] },
+    { id: "2.3", type: "text", q: "¿Probaste antes algo parecido (algún programa, planillas, calculadoras)? ¿Cómo te fue?" },
+    { id: "2.4", type: "radio", q: "¿Cómo preferís arrancar? Si hay alguna fecha que te importe (feria, temporada, lanzamiento), anotala en el comentario.", options: ["Algo chico y rápido", "Algo más completo aunque tarde más", "No sé, lo vemos"] }
   ]},
-  { id: "b3", title: "Usuarios", questions: [
-    { id: "3.1", p: "r", mode: "talk", type: "check", q: "¿Quién usaría la herramienta? Marque todos los que correspondan; en la reunión definimos el orden de importancia.", options: ["Carpinteros clientes", "Vendedores de mostrador", "Arquitectos o constructoras", "Particulares"], why: "Define la experiencia y qué información ve cada uno." },
-    { id: "3.2", p: "r", mode: "fill", type: "text", q: "¿Cuántos carpinteros clientes activos tienen? ¿Cuántos compran todos los meses?", why: "Tamaño del público real." },
-    { id: "3.3", p: "r", mode: "fill", type: "text", q: "¿Cómo es el carpintero típico? (tamaño del taller, edad, si usa más el celular o la computadora)", why: "Define si se diseña primero para celular o para computadora." },
-    { id: "3.4", p: "r", mode: "fill", type: "check", q: "¿Con qué calculan hoy sus clientes?", options: ["Winmaker", "OP 2.1", "Asoftware", "Otro software", "Planilla de Excel", "A mano", "No sabemos"], why: "Muestra con qué se va a comparar la herramienta." },
-    { id: "3.5", p: "y", mode: "fill", type: "text", q: "¿Qué les piden los carpinteros que hoy no pueden ofrecerles?", why: "Posibles funciones diferenciales." },
-    { id: "3.6", p: "y", mode: "fill", type: "text", q: "¿Cuántos vendedores tienen en el mostrador? ¿Cuánto tardan hoy en cotizar una obra y cómo lo hacen?", why: "Uso interno y ahorro de tiempo medible." },
-    { id: "3.7", p: "g", mode: "fill", type: "text", q: "¿Arquitectos o constructoras les piden cotizaciones directamente? ¿Con qué frecuencia?", why: "Posible segundo público." },
-    { id: "3.8", p: "r", mode: "fill", type: "text", q: "¿Hay 3 a 5 carpinteros de confianza dispuestos a probar la herramienta desde el principio?", why: "Validación temprana con usuarios reales." }
+  { id: "b3", title: "Quién la usa", questions: [
+    { id: "3.1", type: "check", q: "¿Quién la usaría?", options: ["Carpinteros clientes", "Vendedores del mostrador", "Arquitectos o constructoras", "Particulares"] },
+    { id: "3.2", type: "radio", q: "¿Cuántos carpinteros te compran seguido?", options: ["Menos de 20", "De 20 a 50", "De 50 a 150", "Más de 150"] },
+    { id: "3.3", type: "check", q: "¿Con qué calculan hoy tus clientes?", options: ["Winmaker", "OP 2.1", "Asoftware", "Otro programa", "Excel", "A mano", "Ni idea"] },
+    { id: "3.4", type: "text", q: "¿Qué te piden los carpinteros que hoy no les podés dar?" },
+    { id: "3.5", type: "radio", q: "¿Tenés 3 a 5 carpinteros de confianza que se animen a probarla desde el principio?", options: ["Sí, ya tengo nombres", "Puede ser", "No"] }
   ]},
-  { id: "b4", title: "Catálogo técnico", questions: [
-    { id: "4.1", p: "r", mode: "fill", type: "text", q: "¿Tienen los manuales de cortes y descuentos de cada línea que venden? ¿En qué formato (PDF, Excel, papel)?", why: "Es la base del cálculo." },
-    { id: "4.2", p: "r", mode: "fill", type: "text", q: "¿Tienen un catálogo de perfiles con código, peso por metro y largo de barra?", why: "Necesario para el despiece, los kilos y el pedido." },
-    { id: "4.3", p: "y", mode: "fill", type: "text", q: "¿Tienen fichas de accesorios y herrajes con sus capacidades (por ejemplo, peso máximo por carro o bisagra)?", why: "Permite validaciones técnicas." },
-    { id: "4.4", p: "r", mode: "fill", type: "check", q: "¿Qué tipologías hay que cubrir sí o sí?", options: ["Corrediza 2 hojas", "Corrediza 3 hojas", "Corrediza 4 hojas", "De abrir", "Oscilobatiente", "Proyectante", "Puerta", "Paño fijo", "Plegadiza", "Elevable", "Frentes integrales"], why: "Alcance del cálculo." },
-    { id: "4.5", p: "r", mode: "fill", type: "text", q: "¿Hay una persona técnica que pueda validar las fórmulas contra aberturas reales? ¿Cuántas horas por semana podría dedicarle?", why: "Un error de fórmula termina en un reclamo." },
-    { id: "4.6", p: "y", mode: "fill", type: "text", q: "¿Las extrusoras los apoyan con datos o con algún software propio? ¿Se les podrían pedir los datos oficiales?", why: "Reduce el trabajo de carga." },
-    { id: "4.7", p: "y", mode: "fill", type: "text", q: "¿Con qué frecuencia cambian líneas, códigos o descuentos? ¿Cómo se enteran?", why: "Define cómo se mantiene actualizado el catálogo." },
-    { id: "4.8", p: "g", mode: "fill", type: "text", q: "¿Conocen errores frecuentes en los manuales de las extrusoras?", why: "Ahorra pruebas y correcciones." },
-    { id: "4.9", p: "r", mode: "fill", type: "radio", q: "¿Cómo se mide habitualmente la abertura?", options: ["Medida de vano", "Marco exterior", "Luz", "Depende de la línea", "No sabemos"], why: "Evita errores graves en la carga de medidas." },
-    { id: "4.10", p: "y", mode: "fill", type: "text", q: "¿Qué vidrios se usan en cada línea (simple, laminado, DVH)? ¿Cómo se calcula la medida del vidrio?", why: "Vidrios en el despiece y en el pedido." },
-    { id: "4.11", p: "y", mode: "fill", type: "text", q: "¿Qué acabados o tratamientos existen y cuáles cambian el precio o la disponibilidad?", why: "Precio y stock por color." },
-    { id: "4.12", p: "g", mode: "fill", type: "text", q: "¿Hay tipologías especiales o propias que quieran incluir?", why: "Personalización." }
+  { id: "b4", title: "Cómo se usa", questions: [
+    { id: "4.1", type: "radio", q: "¿Desde dónde la usarían más los carpinteros?", options: ["Celu, en la obra", "Compu, en el taller", "Las dos por igual", "Tablet"] },
+    { id: "4.2", type: "radio", q: "¿Cómo te imaginás cargar una abertura?", options: ["Paso a paso guiado (línea, tipo, medidas)", "Todo en una pantalla, para cargar rápido", "Elegir de dibujitos y después poner medidas"] },
+    { id: "4.3", type: "radio", q: "Mientras se carga, ¿qué se ve?", options: ["Un dibujo que cambia con las medidas", "Solo la lista de cortes", "Las dos cosas"] },
+    { id: "4.4", type: "radio", q: "¿En qué unidad cargan las medidas?", options: ["Milímetros", "Centímetros", "Depende del carpintero"] },
+    { id: "4.5", type: "radio", q: "Al terminar, ¿qué tiene que ver primero el carpintero?", options: ["El precio total", "La lista de cortes", "Cuántas barras comprar", "Un resumen con todo"] },
+    { id: "4.6", type: "radio", q: "¿Cuánto debería tardar en cotizar una ventana común?", options: ["Menos de 1 minuto", "De 1 a 3 minutos", "No importa si sale completo"] },
+    { id: "4.7", type: "radio", q: "Para usarla, ¿hace falta cuenta?", options: ["No, libre para todos", "Libre para calcular; cuenta para ver precios y pedir", "Solo clientes con cuenta"] },
+    { id: "4.8", type: "radio", q: "¿Cómo se ve?", options: ["Con tu marca y tus colores", "Neutra, sin marca", "Me da igual"] }
   ]},
-  { id: "b5", title: "Precios y condiciones comerciales", questions: [
-    { id: "5.1", p: "r", mode: "fill", type: "text", q: "¿Cómo se forman los precios: por kilo, por barra o por metro? ¿Cambian según el acabado?", why: "Base del cálculo de precios." },
-    { id: "5.2", p: "r", mode: "fill", type: "text", q: "¿Tienen listas distintas por tipo de cliente o descuentos por cuenta?", why: "Define qué precio ve cada usuario." },
-    { id: "5.3", p: "r", mode: "fill", type: "text", q: "¿Con qué frecuencia actualizan precios y dónde está la lista vigente?", why: "Carga manual o conexión con su sistema." },
-    { id: "5.4", p: "y", mode: "fill", type: "check", q: "¿Cómo expresan los precios?", options: ["En pesos", "En dólares", "Con IVA", "Sin IVA"], why: "Presentación y cálculo." },
-    { id: "5.5", p: "r", mode: "talk", type: "text", q: "¿Los carpinteros deberían ver los precios en la herramienta? ¿Sin registrarse, registrados o solo clientes con cuenta?", why: "Decisión comercial clave." },
-    { id: "5.6", p: "r", mode: "talk", type: "text", q: "¿El carpintero podría cargar sus propios precios?", why: "Muchos lo necesitan para adoptar la herramienta." },
-    { id: "5.7", p: "y", mode: "fill", type: "text", q: "¿Ofrecen cuenta corriente o crédito? ¿Con qué plazos?", why: "Mostrar condiciones al armar el pedido." },
-    { id: "5.8", p: "g", mode: "fill", type: "text", q: "¿Tienen promociones o bonificaciones por volumen o por línea?", why: "Herramientas comerciales dentro de la app." },
-    { id: "5.9", p: "r", mode: "talk", type: "text", q: "¿Les preocupa que otros vean sus precios a través de la herramienta?", why: "Define la privacidad de la lista de precios." }
+  { id: "b5", title: "Catálogo y carga de datos", questions: [
+    { id: "5.1", type: "radio", q: "Cuando sale una línea nueva, ¿quién la carga en la app?", options: ["Yo o alguien de mi equipo", "El desarrollador", "La extrusora nos pasa los datos listos", "Entre varios: alguien carga y otro revisa"] },
+    { id: "5.2", type: "check", q: "¿Cómo te gustaría cargarla?", options: ["Formulario en la app, perfil por perfil", "Subiendo un Excel", "Subiendo el PDF del manual y que la app lo lea (con revisión)", "Mandándolo por WhatsApp para que lo cargue otro"] },
+    { id: "5.3", type: "radio", q: "Antes de publicar una línea nueva, ¿quién la revisa?", options: ["Alguien técnico, contra una abertura real", "El desarrollador", "Se publica como “en prueba” y los carpinteros avisan", "Nadie, confío en el manual"] },
+    { id: "5.4", type: "radio", q: "¿Cada cuánto aparecen líneas nuevas o cambios de códigos?", options: ["Varias veces por año", "Una o dos por año", "Casi nunca", "Ni idea"] },
+    { id: "5.5", type: "radio", q: "¿Las extrusoras te pasan los datos técnicos?", options: ["Sí, en Excel o similar", "Solo en PDF", "En papel", "No", "Ni idea"] },
+    { id: "5.6", type: "check", q: "¿Qué datos tenés de cada perfil?", options: ["Código", "Peso por metro", "Largo de barra", "Dibujo de la sección", "Fórmulas de corte", "Nada ordenado"] },
+    { id: "5.7", type: "check", q: "¿Qué tipologías no pueden faltar?", options: ["Corrediza 2 hojas", "Corrediza 3 hojas", "Corrediza 4 hojas", "De abrir", "Oscilobatiente", "Proyectante", "Puerta", "Paño fijo", "Plegadiza", "Elevable", "Frentes integrales"] },
+    { id: "5.8", type: "radio", q: "¿Cómo se suele tomar la medida de la abertura?", options: ["Vano", "Marco exterior", "Luz", "Depende de la línea", "Ni idea"] },
+    { id: "5.9", type: "radio", q: "¿Los carpinteros pueden armar sus propias tipologías o ajustar fórmulas?", options: ["Sí, libremente", "Sí, pero solo para ellos", "No, solo lo oficial"] },
+    { id: "5.10", type: "text", q: "¿Qué vidrios y acabados se usan en cada línea? ¿Cuáles cambian el precio o la disponibilidad?" }
   ]},
-  { id: "b6", title: "Stock, pedidos y logística", questions: [
-    { id: "6.1", p: "r", mode: "fill", type: "check", q: "¿Por qué canales reciben pedidos hoy? En el comentario puede indicar el porcentaje aproximado de cada uno.", options: ["Mostrador", "WhatsApp", "Teléfono", "Mail", "Vendedor en la calle", "Tienda online"], why: "El pedido desde la herramienta tiene que encajar con esto." },
-    { id: "6.2", p: "r", mode: "fill", type: "check", q: "¿Cómo debería llegarles un pedido generado en la herramienta?", options: ["Mensaje de WhatsApp", "Mail", "Carrito con pago", "Directo a su sistema de gestión", "Todavía no sabemos"], why: "Define el nivel de integración." },
-    { id: "6.3", p: "y", mode: "fill", type: "text", q: "¿Conviene mostrar el stock disponible? ¿Por sucursal? ¿Se puede consultar en el momento?", why: "Puede ser una ventaja importante." },
-    { id: "6.4", p: "g", mode: "fill", type: "text", q: "¿Hacen envíos? ¿Con qué costos, zonas y plazos?", why: "Envío dentro del pedido." },
-    { id: "6.5", p: "y", mode: "fill", type: "radio", q: "¿Venden solo barras enteras?", options: ["Solo barras enteras", "También fraccionado o cortado"], why: "Afecta la optimización y el pedido." },
-    { id: "6.6", p: "r", mode: "fill", type: "text", q: "¿Qué pasa hoy cuando un carpintero pide una cotización? ¿Queda registrada en algún lado?", why: "Punto de partida para medir resultados." },
-    { id: "6.7", p: "r", mode: "fill", type: "radio", q: "¿Pueden relacionar un pedido con la cotización que lo originó?", options: ["Sí", "A veces", "No"], why: "Permite saber qué cotizaciones terminan en pedido." }
+  { id: "b6", title: "Precios y stock", questions: [
+    { id: "6.1", type: "radio", q: "¿Cómo se actualizan los precios en la app?", options: ["Los exporto de mi sistema (Excel) y los subo", "Que se tomen solos de mi sistema", "Los cargo a mano", "Ni idea"] },
+    { id: "6.2", type: "radio", q: "¿Cada cuánto cambian los precios?", options: ["Todas las semanas", "Una vez por mes", "Cada algunos meses", "Siguen al dólar"] },
+    { id: "6.3", type: "check", q: "¿Cómo armás el precio? En el comentario, contá si es en pesos o dólares y si va con IVA.", options: ["Por kilo", "Por barra", "Por metro", "Cambia según el acabado", "Listas por tipo de cliente", "Descuento por cliente"] },
+    { id: "6.4", mode: "talk", type: "text", q: "¿Los carpinteros deberían ver tus precios en la app? ¿Y poder cargar los suyos? ¿Te preocupa que la competencia vea tu lista?" },
+    { id: "6.5", type: "radio", q: "¿Qué mostramos del stock? Si vendés cortado y no solo barras enteras, anotalo en el comentario.", options: ["Cantidad disponible en el momento", "Solo “hay” o “no hay”", "Nada de stock"] }
   ]},
-  { id: "b7", title: "Sistemas actuales", questions: [
-    { id: "7.1", p: "r", mode: "fill", type: "text", q: "¿Qué sistema de gestión usan (Tango, Bejerman, Flexxus, SAP, propio u otro)? ¿Qué versión?", why: "Conexión de precios, stock, clientes y pedidos." },
-    { id: "7.2", p: "r", mode: "fill", type: "text", q: "¿Ese sistema permite exportar datos o conectarse con otros programas? ¿Quién lo administra?", why: "Factibilidad de la integración." },
-    { id: "7.3", p: "r", mode: "fill", type: "text", q: "¿Cada cliente tiene un código único? ¿Tienen cargados CUIT, mail y teléfono?", why: "Vincular al usuario de la herramienta con su cuenta de cliente." },
-    { id: "7.4", p: "y", mode: "fill", type: "text", q: "¿Tienen sitio web, tienda online, CRM o WhatsApp Business? ¿En qué plataforma?", why: "Dónde se ubica la herramienta." },
-    { id: "7.5", p: "y", mode: "fill", type: "radio", q: "¿Podrían compartir un ejemplo, sin datos personales, de lista de precios, stock y pedidos?", options: ["Sí", "Hay que consultarlo", "No"], why: "Permite diseñar la integración con datos reales." },
-    { id: "7.6", p: "y", mode: "fill", type: "text", q: "¿Tienen dominio, hosting o cuentas en la nube que convenga usar?", why: "Dónde se publica la herramienta." },
-    { id: "7.7", p: "g", mode: "fill", type: "text", q: "¿Hay políticas de seguridad o de sistemas que haya que respetar?", why: "Restricciones técnicas." }
+  { id: "b7", title: "Pedidos y sistema", questions: [
+    { id: "7.1", type: "check", q: "¿Por dónde te llegan los pedidos hoy? Si sabés más o menos cuánto por cada lado, anotalo en el comentario.", options: ["Mostrador", "WhatsApp", "Teléfono", "Mail", "Vendedor en la calle", "Tienda online"] },
+    { id: "7.2", type: "check", q: "¿Cómo te gustaría recibir los pedidos que salgan de la app?", options: ["Mensaje de WhatsApp", "Mail", "Carrito con pago", "Directo al sistema de gestión", "No sé todavía"] },
+    { id: "7.3", type: "radio", q: "¿Qué sistema de gestión usás? En el comentario, contá si exporta datos y si tus clientes tienen código y CUIT cargados.", options: ["Tango", "Bejerman", "Flexxus", "Uno propio", "Otro", "Ninguno"] }
   ]},
-  { id: "b8", title: "Funcionalidades", intro: "Indique para cada una si es imprescindible, deseable o no hace falta.", questions: [
-    { id: "8.1", p: "r", type: "feature", q: "Cálculo de despiece por tipología (perfiles, cantidades, medidas, ángulos)" },
-    { id: "8.2", p: "r", type: "feature", q: "Obras con varias aberturas" },
-    { id: "8.3", p: "r", type: "feature", q: "Optimización de cortes de barras (disco, despunte, sobrantes)" },
-    { id: "8.4", p: "y", type: "feature", q: "Cálculo de vidrios y optimización de planchas" },
-    { id: "8.5", p: "r", type: "feature", q: "Accesorios y herrajes automáticos" },
-    { id: "8.6", p: "y", type: "feature", q: "Dibujo de la abertura con medidas" },
-    { id: "8.7", p: "y", type: "feature", q: "Frentes compuestos o combinación de tipologías" },
-    { id: "8.8", p: "r", type: "feature", q: "Presupuesto en PDF para el cliente del carpintero (con su logo)" },
-    { id: "8.9", p: "y", type: "feature", q: "PDF para el taller (despiece y cortes, sin precios)" },
-    { id: "8.10", p: "r", type: "feature", q: "Pedido de material desde la herramienta" },
-    { id: "8.11", p: "g", type: "feature", q: "Comparar la misma obra en otra línea o marca" },
-    { id: "8.12", p: "y", type: "feature", q: "Validaciones técnicas (peso de hoja y herraje, vidrio y viento, medidas máximas)" },
-    { id: "8.13", p: "g", type: "feature", q: "Guardar los recortes del carpintero y usarlos en la optimización" },
-    { id: "8.14", p: "y", type: "feature", q: "Seguimiento de presupuestos del carpintero (enviado, aceptado, perdido)" },
-    { id: "8.15", p: "g", type: "feature", q: "Relevamiento en obra desde el celular (fotos, medidas, notas)" },
-    { id: "8.16", p: "g", type: "feature", q: "Importar la planilla de obra (Excel del arquitecto)" },
-    { id: "8.17", p: "g", type: "feature", q: "Uso sin conexión a internet" },
-    { id: "8.18", p: "y", type: "feature", q: "Calculadoras sueltas gratuitas (optimizador, peso de hoja) como primer paso" },
-    { id: "8.19", p: "r", type: "feature", q: "Panel interno con indicadores de uso y de pedidos" },
-    { id: "8.20", p: "y", type: "feature", q: "Herramienta de cotización para los vendedores del mostrador" }
+  { id: "b8", title: "Funcionalidades", intro: "Marcá cada una: imprescindible, estaría bueno o no hace falta.", questions: [
+    { id: "f1", type: "feature", q: "Calcular el despiece (perfiles, medidas, cortes) de obras con varias aberturas" },
+    { id: "f2", type: "feature", q: "Optimizar los cortes de barras, usando también los recortes del taller" },
+    { id: "f3", type: "feature", q: "Calcular vidrios y optimizar planchas" },
+    { id: "f4", type: "feature", q: "Accesorios y herrajes automáticos" },
+    { id: "f5", type: "feature", q: "Dibujo de la abertura y frentes combinados" },
+    { id: "f6", type: "feature", q: "PDF de presupuesto para el cliente del carpintero (con su logo) y PDF para el taller" },
+    { id: "f7", type: "feature", q: "Hacer el pedido de material desde la app" },
+    { id: "f8", type: "feature", q: "Comparar la misma obra en otra línea o marca" },
+    { id: "f9", type: "feature", q: "Validaciones técnicas (peso de hoja, vidrio y viento, medidas máximas)" },
+    { id: "f10", type: "feature", q: "Seguimiento de presupuestos del carpintero (enviado, aceptado, perdido)" },
+    { id: "f11", type: "feature", q: "Relevamiento en obra desde el celu (fotos, medidas, notas)" },
+    { id: "f12", type: "feature", q: "Importar la planilla de obra del arquitecto" },
+    { id: "f13", type: "feature", q: "Que funcione sin internet" },
+    { id: "f14", type: "feature", q: "Calculadoras sueltas gratis (optimizador, peso de hoja) para arrancar" },
+    { id: "f15", type: "feature", q: "Un panel para vos con el uso de la app y los pedidos" },
+    { id: "f16", type: "feature", q: "Una versión para que los vendedores del mostrador coticen rápido" }
   ]},
-  { id: "b9", title: "Información para mejorar la atención y las ventas", questions: [
-    { id: "9.1", p: "r", mode: "talk", type: "text", q: "¿Qué les gustaría saber que hoy no saben? (por ejemplo, qué líneas se cotizan más)", why: "Define los indicadores." },
-    { id: "9.2", p: "r", mode: "talk", type: "text", q: "¿Tienen idea de qué proporción de las cotizaciones termina en pedido y por qué el resto no?", why: "Punto de partida para comparar." },
-    { id: "9.3", p: "r", mode: "talk", type: "check", q: "¿Cuáles creen que son hoy los motivos más comunes por los que una cotización no termina en pedido?", options: ["Precio", "Stock", "Plazo de entrega", "Crédito", "Atención", "La obra no se hizo", "Otro"], why: "Motivos a registrar." },
-    { id: "9.4", p: "y", mode: "talk", type: "text", q: "¿Les interesa saber por qué el carpintero no consigue algunas obras con su cliente final?", why: "Es una causa distinta y requiere otra respuesta." },
-    { id: "9.5", p: "r", mode: "talk", type: "text", q: "¿Qué harían con esa información? (ajustar stock, promociones, contactar al cliente, capacitar)", why: "Un indicador solo sirve si lleva a una acción." },
-    { id: "9.6", p: "y", mode: "fill", type: "text", q: "¿Quién miraría esos indicadores y con qué frecuencia?", why: "Diseño del panel interno." },
-    { id: "9.7", p: "r", mode: "talk", type: "text", q: "¿Aceptan que usar la herramienta requiera registrarse (con CUIT o mail), o prefieren uso libre?", why: "Equilibrio entre facilidad de uso e información disponible." },
-    { id: "9.8", p: "r", mode: "talk", type: "text", q: "¿Están de acuerdo en informar al carpintero, con claridad, qué datos se usan y para qué?", why: "Ley 25.326 y confianza del usuario." }
+  { id: "b9", title: "Ventas", questions: [
+    { id: "9.1", type: "check", q: "¿Sabés más o menos cuántas cotizaciones terminan en pedido? ¿Por qué creés que el resto no? Marcá los motivos y contá lo que sepas en el comentario.", options: ["Precio", "Stock", "Plazo de entrega", "Crédito", "Atención", "La obra no se hizo", "Ni idea"] },
+    { id: "9.2", type: "text", q: "¿Qué te gustaría saber de tus clientes que hoy no sabés? ¿Qué harías con eso?" },
+    { id: "9.3", mode: "talk", type: "text", q: "¿Cómo le contamos al carpintero qué datos usa la app y para qué?" }
   ]},
-  { id: "b10", title: "Marca y difusión", questions: [
-    { id: "10.1", p: "y", mode: "fill", type: "text", q: "¿La herramienta lleva la marca de la empresa? ¿Tienen manual de marca?", why: "Diseño visual." },
-    { id: "10.2", p: "y", mode: "fill", type: "text", q: "¿Debe estar dentro de su sitio web actual o en una dirección propia?", why: "Publicación." },
-    { id: "10.3", p: "y", mode: "fill", type: "text", q: "¿Cómo piensan darla a conocer (vendedores, WhatsApp, redes, capacitaciones)?", why: "Adopción." },
-    { id: "10.4", p: "g", mode: "fill", type: "text", q: "¿Quieren incluir contenidos técnicos (videos, manuales, fichas)?", why: "Valor adicional para el carpintero." },
-    { id: "10.5", p: "g", mode: "fill", type: "text", q: "¿Les interesaría un programa de beneficios por pedidos hechos desde la herramienta?", why: "Incentivo para usarla." }
-  ]},
-  { id: "b11", title: "Soporte y responsabilidades", questions: [
-    { id: "11.1", p: "r", mode: "talk", type: "text", q: "¿Quién atiende a los carpinteros cuando algo no cierra o tienen dudas?", why: "Organización del soporte." },
-    { id: "11.2", p: "r", mode: "talk", type: "text", q: "¿Quién carga y mantiene los catálogos y precios después del lanzamiento?", why: "El catálogo necesita mantenimiento permanente." },
-    { id: "11.3", p: "r", mode: "talk", type: "text", q: "Si una fórmula estuviera mal y un carpintero cortara mal, ¿cómo se maneja? ¿Hace falta un aviso legal?", why: "Responsabilidad sobre los cálculos." }
-  ]},
-  { id: "b12", title: "Alcance y etapas", questions: [
-    { id: "12.2", p: "r", mode: "talk", type: "radio", q: "¿Prefieren empezar con una versión mínima en pocas semanas o con una versión más completa más adelante?", options: ["Versión mínima primero", "Versión completa más adelante", "Conversarlo"], why: "Define la primera etapa." },
-    { id: "12.3", p: "r", mode: "talk", type: "text", q: "¿Quién será dueño de los datos y catálogos, y quién se ocupará de mantenerlos en el futuro?", why: "Continuidad de la herramienta." }
-  ]},
-  { id: "b13", title: "Material a compartir", intro: "Los archivos se envían por separado (mail o WhatsApp); esta página no los sube a ningún lado.", questions: [
-    { id: "m1", p: "r", type: "material", q: "Manuales de cortes y descuentos de las líneas que distribuyen" },
-    { id: "m2", p: "r", type: "material", q: "Catálogo de perfiles con código, peso por metro y largo de barra" },
-    { id: "m3", p: "y", type: "material", q: "Fichas técnicas de accesorios y herrajes (con capacidades)" },
-    { id: "m4", p: "r", type: "material", q: "Lista de precios vigente y estructura de descuentos" },
-    { id: "m5", p: "r", type: "material", q: "Tres aberturas reales ya fabricadas, con su despiece y presupuesto (casos de prueba)" },
-    { id: "m6", p: "y", type: "material", q: "Ejemplo de exportación de clientes, pedidos y stock, sin datos personales" },
-    { id: "m7", p: "y", type: "material", q: "Manual de marca" },
-    { id: "m8", p: "r", type: "material", q: "Contacto de 3 a 5 carpinteros dispuestos a probar" }
+  { id: "b10", title: "Después", questions: [
+    { id: "10.1", type: "check", q: "¿Cómo la darías a conocer?", options: ["Los vendedores", "WhatsApp", "Redes", "Capacitaciones en el local", "Folleto o cartel en el mostrador"] },
+    { id: "10.2", mode: "talk", type: "text", q: "¿Quién atendería las dudas de los carpinteros cuando algo no cierra?" },
+    { id: "10.3", mode: "talk", type: "text", q: "Si una fórmula sale mal y un carpintero corta mal, ¿cómo lo manejamos?" },
+    { id: "10.4", type: "check", q: "¿Qué de esto tenés a mano? Los archivos mandalos aparte por WhatsApp o mail.", options: ["Manuales de cortes y descuentos", "Catálogo de perfiles con peso y largo de barra", "Fichas de accesorios y herrajes", "Lista de precios", "3 aberturas ya fabricadas con despiece y presupuesto", "Ejemplo de pedidos y stock (sin datos personales)", "Logo o manual de marca", "Contacto de carpinteros para probar"] }
   ]}
 ];
-const MATERIAL_OPTIONS = ["Ya lo tenemos", "Lo enviaremos", "No disponible"];
 
 let state = emptyState();
 let storageOk = true;
 
 function emptyState() {
-  return { respondent: { name: "", role: "" }, answers: {}, step: 1, updatedAt: null };
+  return { answers: {}, step: 1, updatedAt: null };
 }
 
 function load() {
@@ -586,10 +519,6 @@ function normalize(data) {
   if (!data || typeof data !== "object") return out;
   const step = parseInt(data.step, 10);
   if (step >= 1 && step <= BLOCKS.length) out.step = step;
-  if (data.respondent) {
-    out.respondent.name = String(data.respondent.name || "");
-    out.respondent.role = String(data.respondent.role || "");
-  }
   if (data.answers && typeof data.answers === "object") {
     for (const [k, v] of Object.entries(data.answers)) {
       if (!v || typeof v !== "object") continue;
@@ -609,7 +538,7 @@ function save() {
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => {
     if (persistNow()) setStatus("Guardado en este navegador.");
-    else setStatus("No se pudo guardar en este navegador. Use “Guardar y seguir después” o descargue el respaldo.");
+    else setStatus("No se pudo guardar en este navegador. Usá “Guardar y seguir después” o bajá el respaldo.");
   }, 300);
 }
 
@@ -651,7 +580,7 @@ function printValue(textarea) {
 function optionGroup(q, num, type) {
   const a = answerOf(q.id);
   const group = el("div", { class: "opts", role: "group", "aria-label": num + " opciones" });
-  const opts = type === "feature" ? FEATURE_OPTIONS : type === "material" ? MATERIAL_OPTIONS : q.options;
+  const opts = type === "feature" ? FEATURE_OPTIONS : q.options;
   const inputType = type === "check" ? "checkbox" : "radio";
   opts.forEach((opt, i) => {
     const inputId = "q-" + q.id + "-" + i;
@@ -683,9 +612,9 @@ function commentBox(q, labelText) {
 
 function renderQuestion(q, num) {
   const wrap = el("div", { class: "q", id: "q-" + q.id });
-  if (q.type === "feature" || q.type === "material") {
+  if (q.type === "feature") {
     wrap.className = "feature-row";
-    wrap.appendChild(el("div", {}, [el("span", { class: "q-num", text: num }), document.createTextNode(q.q + " "), badge(PRIORITY[q.p].label, PRIORITY[q.p].cls)]));
+    wrap.appendChild(el("div", {}, [el("span", { class: "q-num", text: num }), document.createTextNode(q.q)]));
     wrap.appendChild(optionGroup(q, num, q.type));
     return wrap;
   }
@@ -693,21 +622,17 @@ function renderQuestion(q, num) {
   const titleFor = q.type === "text" ? textId : null;
   const title = el(titleFor ? "label" : "p", titleFor ? { class: "q-title", for: titleFor } : { class: "q-title" }, [el("span", { class: "q-num", text: num }), document.createTextNode(q.q)]);
   wrap.appendChild(title);
-  wrap.appendChild(el("div", { class: "q-meta" }, [
-    badge(PRIORITY[q.p].label, PRIORITY[q.p].cls),
-    q.mode === "talk" ? badge("Para conversar", "m-talk") : badge("Para completar", "m-fill")
-  ]));
-  if (q.why) wrap.appendChild(el("p", { class: "q-why", text: "Por qué preguntamos: " + q.why }));
+  if (q.mode === "talk") wrap.appendChild(el("div", { class: "q-meta" }, [badge("Lo charlamos", "m-talk")]));
   if (q.type === "text") {
     const a = answerOf(q.id);
-    const ta = el("textarea", { id: textId, rows: q.mode === "talk" ? "2" : "3", placeholder: q.mode === "talk" ? "Notas previas (opcional)" : "" });
+    const ta = el("textarea", { id: textId, rows: q.mode === "talk" ? "2" : "3", placeholder: q.mode === "talk" ? "Si querés, dejá alguna nota" : "" });
     ta.value = typeof a.value === "string" ? a.value : "";
     ta.addEventListener("input", () => { a.value = ta.value; onChange(q.id); });
     wrap.appendChild(ta);
     wrap.appendChild(printValue(ta));
   } else {
     wrap.appendChild(optionGroup(q, num, q.type));
-    for (const n of commentBox(q, q.mode === "talk" ? "Notas previas (opcional)" : "Comentario (opcional)")) wrap.appendChild(n);
+    for (const n of commentBox(q, "Comentario (opcional)")) wrap.appendChild(n);
   }
   return wrap;
 }
@@ -725,12 +650,10 @@ function render() {
       el("span", { class: "block-progress", id: "p-" + b.id })
     ]);
     card.appendChild(head);
-    if (b.intro) card.appendChild(el("p", { class: "q-why", text: b.intro }));
+    if (b.intro) card.appendChild(el("p", { class: "hint", text: b.intro }));
     b.questions.forEach((q, qi) => card.appendChild(renderQuestion(q, (bi + 1) + "." + (qi + 1))));
     root.appendChild(card);
   });
-  document.getElementById("r-name").value = state.respondent.name;
-  document.getElementById("r-role").value = state.respondent.role;
   showStep(state.step, false);
   updateProgress();
 }
@@ -739,7 +662,6 @@ function showStep(n, userAction) {
   const step = Math.min(Math.max(1, n), BLOCKS.length);
   state.step = step;
   document.querySelectorAll(".step").forEach(card => { card.hidden = card.getAttribute("data-step") !== String(step); });
-  document.getElementById("respondentCard").hidden = step !== 1;
   document.getElementById("stepLabel").textContent = "Paso " + step + " de " + BLOCKS.length + " · " + BLOCKS[step - 1].title;
   document.getElementById("stepSelect").value = String(step);
   document.getElementById("btnPrev").disabled = step === 1;
@@ -768,24 +690,34 @@ function goToQuestion(id) {
   if (field) field.focus({ preventScroll: true });
 }
 
+function pendingButton(text, onClick) {
+  const btn = el("button", { type: "button", class: "link-btn", text });
+  btn.addEventListener("click", onClick);
+  return el("li", {}, [btn]);
+}
+
+// Lists unanswered questions, skipping "Lo charlamos" ones; features are summarized in one line.
 function renderPending() {
   const list = document.getElementById("pendingList");
   list.textContent = "";
   const pending = [];
-  for (const b of BLOCKS) for (const q of b.questions) if (q.p === "r" && !isAnswered(q.id)) pending.push(q.id);
+  const features = [];
+  for (const b of BLOCKS) for (const q of b.questions) {
+    if (isAnswered(q.id) || q.mode === "talk") continue;
+    (q.type === "feature" ? features : pending).push(q.id);
+  }
   const intro = document.getElementById("pendingIntro");
-  if (!pending.length) {
+  if (!pending.length && !features.length) {
     intro.textContent = "";
-    intro.appendChild(el("span", { class: "done-msg", text: "No quedan preguntas bloqueantes sin responder." }));
+    intro.appendChild(el("span", { class: "done-msg", text: "¡Respondiste todo! Gracias." }));
     return;
   }
-  intro.textContent = "Quedan " + pending.length + ". Se pueden responder ahora o conversar en la reunión; toque una para ir a ella.";
+  intro.textContent = "No es obligatorio, pero si tenés un rato, tocá una para ir a ella.";
   for (const id of pending) {
     const loc = locate(id);
-    const btn = el("button", { type: "button", class: "link-btn", text: loc.num + " " + loc.q.q });
-    btn.addEventListener("click", () => goToQuestion(id));
-    list.appendChild(el("li", {}, [btn]));
+    list.appendChild(pendingButton(loc.num + " " + loc.q.q, () => goToQuestion(id)));
   }
+  if (features.length) list.appendChild(pendingButton("Funcionalidades: " + features.length + " sin marcar", () => goToQuestion(features[0])));
 }
 
 function onChange(id) {
@@ -850,7 +782,7 @@ async function decodeState(token) {
 }
 
 function hasAnyAnswer() {
-  return Object.keys(state.answers).some(isAnswered) || state.respondent.name.trim() !== "";
+  return Object.keys(state.answers).some(isAnswered);
 }
 
 async function restoreFromHash() {
@@ -879,8 +811,6 @@ function formatDate(iso) {
 function readableText() {
   const lines = [];
   lines.push("RELEVAMIENTO: SOFTWARE DE CÁLCULO DE ABERTURAS");
-  lines.push("Nombre: " + (state.respondent.name || "(sin completar)"));
-  lines.push("Cargo o área: " + (state.respondent.role || "(sin completar)"));
   lines.push("Última modificación: " + formatDate(state.updatedAt));
   lines.push("");
   BLOCKS.forEach((b, bi) => {
@@ -899,8 +829,7 @@ function readableText() {
 }
 
 function fileStamp() {
-  const name = (state.respondent.name || "respuestas").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-|-$/g, "").toLowerCase();
-  return "relevamiento-" + (name || "respuestas") + "-" + new Date().toISOString().slice(0, 10);
+  return "relevamiento-respuestas-" + new Date().toISOString().slice(0, 10);
 }
 
 function download(filename, content, type) {
@@ -930,14 +859,7 @@ async function copyText(text) {
   }
 }
 
-function bindRespondent(id, key) {
-  const input = document.getElementById(id);
-  input.addEventListener("input", () => { state.respondent[key] = input.value; save(); });
-}
-
 function bindActions() {
-  bindRespondent("r-name", "name");
-  bindRespondent("r-role", "role");
 
   document.getElementById("btnTxt").addEventListener("click", () => {
     download(fileStamp() + ".txt", readableText(), "text/plain;charset=utf-8");
@@ -950,18 +872,17 @@ function bindActions() {
   });
   document.getElementById("btnCopy").addEventListener("click", async () => {
     const ok = await copyText(readableText());
-    setStatus(ok ? "Respuestas copiadas. Puede pegarlas en un mensaje o mail." : "No se pudo copiar. Use la descarga de texto.");
+    setStatus(ok ? "Respuestas copiadas. Pegalas en un mensaje o mail." : "No se pudo copiar. Usá la descarga de texto.");
   });
   document.getElementById("btnWa").addEventListener("click", () => {
-    const who = state.respondent.name ? " (" + state.respondent.name + ")" : "";
-    const msg = "Hola, completé el relevamiento de software de aberturas" + who + ". Adjunto el archivo con las respuestas.";
+    const msg = "Listo, te paso las respuestas del relevamiento. Va el archivo adjunto.";
     window.open("https://wa.me/?text=" + encodeURIComponent(msg), "_blank", "noopener");
-    setStatus("Recuerde adjuntar el archivo descargado o pegar las respuestas copiadas.");
+    setStatus("Acordate de adjuntar el archivo que bajaste o pegar las respuestas copiadas.");
   });
   document.getElementById("btnMail").addEventListener("click", () => {
     const limit = 1500;
     let body = readableText();
-    if (body.length > limit) body = body.slice(0, limit) + "\n\n[Texto recortado. Adjunte el archivo descargado con las respuestas completas.]";
+    if (body.length > limit) body = body.slice(0, limit) + "\n\n[Texto recortado. Adjuntá el archivo que bajaste con las respuestas completas.]";
     location.href = "mailto:?subject=" + encodeURIComponent("Relevamiento: software de cálculo de aberturas") + "&body=" + encodeURIComponent(body);
   });
   document.getElementById("btnPrint").addEventListener("click", () => window.print());
@@ -983,7 +904,7 @@ function bindActions() {
   });
   document.getElementById("btnResumeCopy").addEventListener("click", async () => {
     const ok = await copyText(document.getElementById("resumeLink").value);
-    setStatus(ok ? "Link copiado." : "No se pudo copiar; seleccione el link y cópielo a mano.");
+    setStatus(ok ? "Link copiado." : "No se pudo copiar; seleccioná el link y copialo a mano.");
   });
   document.getElementById("btnResumeWa").addEventListener("click", () => {
     const msg = "Link para continuar el relevamiento: " + document.getElementById("resumeLink").value;
@@ -998,7 +919,7 @@ function bindActions() {
       try {
         const data = JSON.parse(String(reader.result));
         if (data.format && data.format !== STORAGE_KEY) throw new Error("format");
-        if (!confirm("Esto reemplaza las respuestas guardadas en este navegador. ¿Continuar?")) return;
+        if (!confirm("Esto reemplaza las respuestas guardadas en este navegador. ¿Seguimos?")) return;
         state = normalize(data);
         persistNow();
         render();
